@@ -508,6 +508,7 @@ class Move():
         if enPassant:
             self.pieceCaptured = "bP" if self.pieceMoved == "wP" else "wP"
         self.isCastleMove = isCastleMove
+        self.isCapture = self.pieceCaptured != "--"
         self.moveID = self.startRow * 1000 + self.startCol * 100 + self.endRow * 10 + self.endCol
 
     #def getChessNotation(self): # Very basic chess notation. Can be improved later
