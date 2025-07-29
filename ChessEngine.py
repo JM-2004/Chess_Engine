@@ -21,6 +21,7 @@ class GameState():
         self.pins =[]
         self.checks = []
         self.enPassantPossible = ()
+        self.enPassantPossibleLog = [self.enPassantPossible]
         self.currentCastlingRights = CastleRights(True, True, True, True) # White King Side, White Queen Side, Black King Side, Black Queen Side
         self.castleRightsLog = [CastleRights(self.currentCastlingRights.wKS, self.currentCastlingRights.wQS,
                                              self.currentCastlingRights.bKS, self.currentCastlingRights.bQS)]
@@ -57,6 +58,8 @@ class GameState():
             else: # Queenside castle
                 self.board[move.endRow][move.endCol + 1] = self.board[move.endRow][move.endCol - 2]
                 self.board[move.endRow][move.endCol - 2] = "--"
+
+        self.enPassantPossibleLog.append(self.enPassantPossible)
         # Update castling rights
         self.updateCastlingRights(move)
         self.castleRightsLog.append(CastleRights(self.currentCastlingRights.wKS, self.currentCastlingRights.wQS,
@@ -79,10 +82,8 @@ class GameState():
             if move.enPassant:
                 self.board[move.endRow][move.endCol] = "--"
                 self.board[move.startRow][move.endCol] = move.pieceCaptured
-                self.enPassantPossible = (move.endRow, move.endCol)
-            # Undo 2 sqaure pawn advance should allow en passant again
-            if move.pieceMoved[1] == 'P' and abs(move.startRow - move.endRow) == 2:
-                self.enPassantPossible = ()
+            self.enPassantPossibleLog.pop()
+            self.enPassantPossible = self.enPassantPossibleLog[-1]
             # Undo castling rights
             self.castleRightsLog.pop()
             self.currentCastlingRights = self.castleRightsLog[-1]
@@ -95,6 +96,8 @@ class GameState():
                 else: # Queenside castle
                     self.board[move.endRow][move.endCol - 2] = self.board[move.endRow][move.endCol + 1]
                     self.board[move.endRow][move.endCol + 1] = "--"
+
+            
             self.checkMate = False
             self.staleMate = False
 
