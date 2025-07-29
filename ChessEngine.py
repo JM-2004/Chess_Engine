@@ -46,7 +46,8 @@ class GameState():
             self.board[move.startRow][move.endCol] = "--"
         # If pawn promotes, replace it with the promoted piece
         if move.pawnPromotion:
-            promotedPiece = input("Enter the piece to promote to (Q, R, B, N): ")
+            #promotedPiece = input("Enter the piece to promote to (Q, R, B, N): ")
+            promotedPiece = 'Q'
             self.board[move.endRow][move.endCol] = move.pieceMoved[0] + promotedPiece
         # castle move
         if move.isCastleMove:
@@ -94,6 +95,8 @@ class GameState():
                 else: # Queenside castle
                     self.board[move.endRow][move.endCol - 2] = self.board[move.endRow][move.endCol + 1]
                     self.board[move.endRow][move.endCol + 1] = "--"
+            self.checkMate = False
+            self.staleMate = False
 
     def updateCastlingRights(self, move):
         if move.pieceMoved == "wK":

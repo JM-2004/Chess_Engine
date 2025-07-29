@@ -3,6 +3,7 @@
 
 import pygame as p
 import ChessEngine
+import MoveFinder
 
 WIDTH = 512
 HEIGHT = 512
@@ -31,12 +32,15 @@ def main():
     sqSelected = () # tuple: (row, col) of the square selected by the user
     playerClicks = []  # Keep track of player clicks
     gameOver = False
+    playerOne = True  # True if human playing white, False if AI playing white
+    playerTwo = False  # True if human playing black, False if AI playing black
     while running:
+        humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
             elif e.type == p.MOUSEBUTTONDOWN:
-                if not gameOver:
+                if not gameOver and humanTurn:
                     location = p.mouse.get_pos()
                     row = location[1] // SQUARE_SIZE
                     col = location[0] // SQUARE_SIZE
@@ -48,7 +52,7 @@ def main():
                         playerClicks.append(sqSelected) # append both 1st and 2nd clicks
                     if len(playerClicks) == 2:
                         move=ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
-                        print(move.getChessNotation())
+                        #print(move.getChessNotation())
                         for i in range(len(validMoves)):
                             if move == validMoves[i]:
                                 gs.makeMove(validMoves[i])
@@ -72,6 +76,14 @@ def main():
                     moveMade = False
                     animate = False
                     gameOver = False
+        # AI move logic
+        if not gameOver and not humanTurn:
+            AI_move = MoveFinder.findBestMove(gs, validMoves)
+            if AI_move is None:
+                AI_move = MoveFinder.findRandomMove(validMoves)
+            gs.makeMove(AI_move)
+            moveMade = True
+            animate = True
         if(moveMade):
             if animate:
                 animateMove(gs.movesLog[-1], screen, gs.board, clock)
