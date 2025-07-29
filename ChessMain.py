@@ -33,7 +33,7 @@ def main():
     playerClicks = []  # Keep track of player clicks
     gameOver = False
     playerOne = True  # True if human playing white, False if AI playing white
-    playerTwo = False  # True if human playing black, False if AI playing black
+    playerTwo = True  # True if human playing black, False if AI playing black
     while running:
         humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
         for e in p.event.get():

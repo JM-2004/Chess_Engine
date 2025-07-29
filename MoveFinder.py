@@ -12,7 +12,7 @@ pieceValue = {
 }
 CHECKMATE = 1000
 STALEMATE = 0
-DEPTH = 4
+DEPTH = 2
 
 def findRandomMove(validMoves):
     return validMoves[random.randint(0, len(validMoves) - 1)]
