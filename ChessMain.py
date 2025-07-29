@@ -5,10 +5,10 @@ import pygame as p
 import ChessEngine
 import MoveFinder
 
-BOARD_WIDTH = 512
-BOARD_HEIGHT = 512
-MOVE_LOG_PANEL_WIDTH = 250
-MOVE_LOG_PANEL_HEIGHT = 512
+BOARD_WIDTH = 768
+BOARD_HEIGHT = 768
+MOVE_LOG_PANEL_WIDTH = 350
+MOVE_LOG_PANEL_HEIGHT = 768
 DIMENSION = 8 # 8x8
 SQUARE_SIZE = BOARD_HEIGHT // DIMENSION
 MAX_FPS = 30
@@ -35,8 +35,8 @@ def main():
     sqSelected = () # tuple: (row, col) of the square selected by the user
     playerClicks = []  # Keep track of player clicks
     gameOver = False
-    playerOne = True  # True if human playing white, False if AI playing white
-    playerTwo = True  # True if human playing black, False if AI playing black
+    playerOne = False  # True if human playing white, False if AI playing white
+    playerTwo = False  # True if human playing black, False if AI playing black
     while running:
         humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)
         for e in p.event.get():
@@ -190,7 +190,7 @@ def drawMoveLog(screen, gs, font):
             moveString += moveLog[i+1].getChessNotation()
         moveTexts.append(moveString)
 
-    movesPerRow = 2
+    movesPerRow = 3
     padding = 10
     lineSpacing = 4
     textY = padding
